@@ -1,5 +1,5 @@
 # Publication
-Manipulating OpenFlow Link Discovery Packet Forwarding for Topology Poisoning (CCS'24)
+Chen, Mingming, Thomas La Porta, Teryl Taylor, Frederico Araujo, and Trent Jaeger. "Manipulating openflow link discovery packet forwarding for topology poisoning." In Proceedings of the 2024 on ACM SIGSAC Conference on Computer and Communications Security, pp. 3704-3718. 2024.
 
 https://dl.acm.org/doi/abs/10.1145/3658644.3690345
 
