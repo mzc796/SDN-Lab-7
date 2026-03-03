@@ -50,95 +50,95 @@ NOTE: After installation and reboot, please DO NOT select `Install Now` when the
    ```
    (2) Configure JAVA_HOME to /etc/profile
 
-  ```
-  sudo vim /etc/profile
-  ```
-  (3) Add the following to the end of /etc/profile
-  ```
-  JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-  PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
-  export JAVA_HOME
-  export JRE_HOME
-  export PATH
-  ```
-  (4) Make JAVE_HOME valid and Test JAVA Version
-  ```
-  source /etc/profile
-  java -version
-  ```
+      ```
+      sudo vim /etc/profile
+      ```
+      (3) Add the following to the end of /etc/profile
+      ```
+      JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
+      export JAVA_HOME
+      export JRE_HOME
+      export PATH
+      ```
+      (4) Make JAVE_HOME valid and Test JAVA Version
+      ```
+      source /etc/profile
+      java -version
+      ```
 3. Install Latest OpenDaylight (Calcium, June 27, 2024)
-  (1) Download OpenDaylight Calcium
-  ```
-  wget https://nexus.opendaylight.org/content/repositories/opendaylight.release/org/opendaylight/integration/karaf/0.20.1/karaf-0.20.1.zip
-  ```
-  (2) Extract it to $HOME
-  ```
-  unzip karaf-0.20.1.zip
-  ```
-  (3) Configure ODL-0.20.1 Environment
-  ```
-  cd karaf-0.20.1/bin
-  vim setenv
-  ```
-  (4) Add the following to the setenv file
-  
-  ```
-  export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-  ```
+      (1) Download OpenDaylight Calcium
+      ```
+      wget https://nexus.opendaylight.org/content/repositories/opendaylight.release/org/opendaylight/integration/karaf/0.20.1/karaf-0.20.1.zip
+      ```
+      (2) Extract it to $HOME
+      ```
+      unzip karaf-0.20.1.zip
+      ```
+      (3) Configure ODL-0.20.1 Environment
+      ```
+      cd karaf-0.20.1/bin
+      vim setenv
+      ```
+      (4) Add the following to the setenv file
+      
+      ```
+      export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+      ```
 4. Run OpenDaylight and Install OpenFlow Plugins
-  (1) Run OpenDaylight
-  ```
-  sudo ./karaf
-  ```
-  (2) Install OpenFlow Plugins on OpenDaylight terminal `opendaylight-user@root>`:
-  ```
-  feature:install odl-openflowplugin-app-topology-lldp-discovery odl-openflowplugin-app-table-miss-enforcer odl-openflowplugin-flow-services odl-openflowplugin-flow-services-rest odl-openflowplugin-app-topology-manager odl-openflowplugin-app-lldp-speaker
-  ```
-  (3) Check Listening Ports
-
-  Open another terminal
-  
-  ```
-  sudo lsof -i -P -n | grep LISTEN
-  ```
-  NOTE: If ```tcp *:6653 (LISTEN)``` and ```tcp *:8181 (LISTEN)``` do not show, shut down OpenDaylight with ```Control+D``` and restart ```sudo ./karaf```
+      (1) Run OpenDaylight
+      ```
+      sudo ./karaf
+      ```
+      (2) Install OpenFlow Plugins on OpenDaylight terminal `opendaylight-user@root>`:
+      ```
+      feature:install odl-openflowplugin-app-topology-lldp-discovery odl-openflowplugin-app-table-miss-enforcer odl-openflowplugin-flow-services odl-openflowplugin-flow-services-rest odl-openflowplugin-app-topology-manager odl-openflowplugin-app-lldp-speaker
+      ```
+      (3) Check Listening Ports
+    
+      Open another terminal
+      
+      ```
+      sudo lsof -i -P -n | grep LISTEN
+      ```
+      NOTE: If ```tcp *:6653 (LISTEN)``` and ```tcp *:8181 (LISTEN)``` do not show, shut down OpenDaylight with ```Control+D``` and restart ```sudo ./karaf```
 
 ## Build and Run Mininet VM
    
   We build another VM to run Mininet. The Mininet VM use the ODL VM setting but with Memory:4GB, Storage: 50GB
 
 1. Install mininet
-  ```
-  sudo apt-get update
-  sudo apt-get install mininet
-  ```
+      ```
+      sudo apt-get update
+      sudo apt-get install mininet
+      ```
 2. Download marionette_odl.zip and extract it to $HOME
    
-   NOTE: If you download the code from GitHub and the name is ```marionette_odl-master.zip```, please change the folder name to ```marionette_odl``` after extracting it to $HOME.
-   
+       NOTE: If you download the code from GitHub and the name is ```marionette_odl-master.zip```, please change the folder name to ```marionette_odl``` after extracting it to $HOME.
+       
 4. Run Mininet with Customized Topology and Connect to Remote Controller with $IP_ODL
-  ``` 
-  cd marionette_odl/mininet_fattree
-  sudo chmod 774 fattree_mn_run.sh dump_flows.sh
-  sudo ./fattree_mn_run.sh $IP_ODL
-  ```
-  NOTE: The $IP_ODL can be known with the command ```ifconfig``` on OpenDaylight VM.
-
-  If the connection between ODL and mininet is successful, the mininet terminal shows: 
-  ```
-  *** Creating network
-  *** Adding controller
-  *** Adding hosts:
-  ...
-  ```
-  Otherwise, there will be ``Unable to connect the remote controller at $IP_ODL`` after ``*** Adding controller``
+      ``` 
+      cd marionette_odl/mininet_fattree
+      sudo chmod 774 fattree_mn_run.sh dump_flows.sh
+      sudo ./fattree_mn_run.sh $IP_ODL
+      ```
+      NOTE: The $IP_ODL can be known with the command ```ifconfig``` on OpenDaylight VM.
+    
+      If the connection between ODL and mininet is successful, the mininet terminal shows: 
+      ```
+      *** Creating network
+      *** Adding controller
+      *** Adding hosts:
+      ...
+      ```
+      Otherwise, there will be ``Unable to connect the remote controller at $IP_ODL`` after ``*** Adding controller``
 ### Utility for Checking Flow Entries 
-  ```
-  sudo ./dump_flows.sh $sw_id
-  ```
-  For Example,
-  ```
-  sudo ./dump_flows.sh s1
+      ```
+      sudo ./dump_flows.sh $sw_id
+      ```
+      For Example,
+      ```
+      sudo ./dump_flows.sh s1
   ```
 ## Marionette Attack
 To efficiently demonstrate Marionette with budgeted time (within 5 minutes) and resources (2 core CPU, Memory: 32GB), we give Marionette an easy goal to run the reinforcement learning algorithm to compute an adequate deceptive topology.
@@ -151,10 +151,10 @@ In `main.py`, we set the eavesdropping node as node 6 (openflow:7), the expected
    NOTE: If you download the code from GitHub and the name is ```marionette_odl-master.zip```, please change the folder name to ```marionette_odl``` after extracting it to $HOME.
    
 3. Run Marionette
-  ```
-  cd marionette_odl/
-  python3.9 main.py
-  ```
+      ```
+      cd marionette_odl/
+      python3.9 main.py
+      ```
 ### Result
   
  After the program is finished, we go to the 'figure' folder. There will be three figures:
@@ -169,11 +169,11 @@ In `main.py`, we set the eavesdropping node as node 6 (openflow:7), the expected
   
 ### Utility to Reset the Environment
 
-```
-python3.9 clear_all.py 36
-```
-
-NOTE: `36` is the total number of switches in this fat tree topology
+    ```
+    python3.9 clear_all.py 36
+    ```
+    
+    NOTE: `36` is the total number of switches in this fat tree topology
 
 ### NOTE: 
 
