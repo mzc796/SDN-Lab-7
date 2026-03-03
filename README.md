@@ -90,9 +90,9 @@ NOTE: After installation and reboot, please DO NOT select `Install Now` when the
   ```
   sudo ./karaf
   ```
-> (2) Install OpenFlow Plugins
+> (2) Install OpenFlow Plugins on OpenDaylight terminal `opendaylight-user@root>`:
   ```
-  opendaylight-user@root>feature:install odl-openflowplugin-app-topology-lldp-discovery odl-openflowplugin-app-table-miss-enforcer odl-openflowplugin-flow-services odl-openflowplugin-flow-services-rest odl-openflowplugin-app-topology-manager odl-openflowplugin-app-lldp-speaker
+feature:install odl-openflowplugin-app-topology-lldp-discovery odl-openflowplugin-app-table-miss-enforcer odl-openflowplugin-flow-services odl-openflowplugin-flow-services-rest odl-openflowplugin-app-topology-manager odl-openflowplugin-app-lldp-speaker
   ```
 > (3) Check Listening Ports
 >
