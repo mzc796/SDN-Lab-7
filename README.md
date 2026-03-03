@@ -44,11 +44,11 @@ NOTE: After installation and reboot, please DO NOT select `Install Now` when the
     python3.9 -m pip install 'stable-baselines3==1.7.0'
     ```
 2. Install and Configure Java
-  (1) Install Java
-  ```
-  sudo apt-get install openjdk-17-jdk
-  ```
-  (2) Configure JAVA_HOME to /etc/profile
+   (1) Install Java
+   ```
+   sudo apt-get install openjdk-17-jdk
+   ```
+   (2) Configure JAVA_HOME to /etc/profile
 
   ```
   sudo vim /etc/profile
