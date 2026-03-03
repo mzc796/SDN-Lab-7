@@ -168,11 +168,9 @@ In `main.py`, we set the eavesdropping node as node 6 (openflow:7), the expected
   The RL_topo.png should be the same as topo_deceptive.png, which proves the success of precise link manipulation.
   
 ### Utility to Reset the Environment
-
     ```
     python3.9 clear_all.py 36
     ```
-    
     NOTE: `36` is the total number of switches in this fat tree topology
 
 ### NOTE: 
