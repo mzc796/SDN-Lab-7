@@ -44,16 +44,16 @@ NOTE: After installation and reboot, please DO NOT select `Install Now` when the
   python3.9 -m pip install 'stable-baselines3==1.7.0'
   ```
 2. Install and Configure Java
-> (1) Install Java
+  (1) Install Java
   ```
   sudo apt-get install openjdk-17-jdk
   ```
-> (2) Configure JAVA_HOME to /etc/profile
+  (2) Configure JAVA_HOME to /etc/profile
 
   ```
   sudo vim /etc/profile
   ```
-> (3) Add the following to the end of /etc/profile
+  (3) Add the following to the end of /etc/profile
   ```
   JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
   PATH=$PATH:$HOME/bin:$JAVA_HOME/bin
@@ -61,43 +61,43 @@ NOTE: After installation and reboot, please DO NOT select `Install Now` when the
   export JRE_HOME
   export PATH
   ```
-> (4) Make JAVE_HOME valid and Test JAVA Version
+  (4) Make JAVE_HOME valid and Test JAVA Version
   ```
   source /etc/profile
   java -version
   ```
 3. Install Latest OpenDaylight (Calcium, June 27, 2024)
-> (1) Download OpenDaylight Calcium
+  (1) Download OpenDaylight Calcium
   ```
   wget https://nexus.opendaylight.org/content/repositories/opendaylight.release/org/opendaylight/integration/karaf/0.20.1/karaf-0.20.1.zip
   ```
->  (2) Extract it to $HOME
+  (2) Extract it to $HOME
   ```
   unzip karaf-0.20.1.zip
   ```
-> (3) Configure ODL-0.20.1 Environment
+  (3) Configure ODL-0.20.1 Environment
   ```
   cd karaf-0.20.1/bin
   vim setenv
   ```
-> (4) Add the following to the setenv file
+  (4) Add the following to the setenv file
   
   ```
   export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
   ```
 4. Run OpenDaylight and Install OpenFlow Plugins
-> (1) Run OpenDaylight
+  (1) Run OpenDaylight
   ```
   sudo ./karaf
   ```
-> (2) Install OpenFlow Plugins on OpenDaylight terminal `opendaylight-user@root>`:
+  (2) Install OpenFlow Plugins on OpenDaylight terminal `opendaylight-user@root>`:
   ```
-feature:install odl-openflowplugin-app-topology-lldp-discovery odl-openflowplugin-app-table-miss-enforcer odl-openflowplugin-flow-services odl-openflowplugin-flow-services-rest odl-openflowplugin-app-topology-manager odl-openflowplugin-app-lldp-speaker
+  feature:install odl-openflowplugin-app-topology-lldp-discovery odl-openflowplugin-app-table-miss-enforcer odl-openflowplugin-flow-services odl-openflowplugin-flow-services-rest odl-openflowplugin-app-topology-manager odl-openflowplugin-app-lldp-speaker
   ```
-> (3) Check Listening Ports
->
-> Open another terminal
-> 
+  (3) Check Listening Ports
+
+  Open another terminal
+  
   ```
   sudo lsof -i -P -n | grep LISTEN
   ```
@@ -180,5 +180,6 @@ NOTE: `36` is the total number of switches in this fat tree topology
 1. Because the latest version (e.g. at least after the version of 15.3.0) of OpenDaylight removed the user interface project DLUX and we want to show the changes of the topology easily, we use RESTful API to GET topology in real-time and draw the topology with nodes having fixed positions by scripts.
 
 2. The node indices start from 0 in RL_topo.png but start from 1 in topo_deceptive.png.
+   
 3. I recently found some bugs on the OpenDaylight Calcium (karaf-0.20.1.zip). When restarting the ODL with the features installed, the restful URLs (the scripts under `bash` folder) encounter 401 errors. That is the bug of OpenDaylight Calcium, not Marionette. Please consider going back to Step `3` of `Build and Run OpenDaylight VM` and continue.
-4. You can also use previous OpenDaylight versions (e.g. 15.3.2). If so, you will need to change the scripts under the `bash` folder. To send flow entries, please change the URLs to this [link](https://docs.opendaylight.org/projects/openflowplugin/en/latest/users/flow-examples.html). For requesting nodes and topology, please change the URLs as `http://$IP_ADDR:8181/restconf/operational/opendaylight-inventory:nodes` and `http://$IP_ADDR:8181/restconf/operational/network-topology:network-topology/topology/flow:1`.
+5. You can also use previous OpenDaylight versions (e.g. 15.3.2). If so, you will need to change the scripts under the `bash` folder. To send flow entries, please change the URLs to this [link](https://docs.opendaylight.org/projects/openflowplugin/en/latest/users/flow-examples.html). For requesting nodes and topology, please change the URLs as `http://$IP_ADDR:8181/restconf/operational/opendaylight-inventory:nodes` and `http://$IP_ADDR:8181/restconf/operational/network-topology:network-topology/topology/flow:1`.
