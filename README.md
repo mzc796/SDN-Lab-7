@@ -34,15 +34,15 @@ NOTE: After installation and reboot, please DO NOT select `Install Now` when the
 
 ## Build and Run OpenDaylight VM
 1. Install Python3.9 and stable-baselines3
-  ```
-  sudo apt-get update
-  sudo add-apt-repository ppa:deadsnakes/ppa
-  sudo apt-get install python3.9 vim wget net-tools curl
-  sudo apt install python3-pip python3.9-distutils
-  python3.9 -m pip install --upgrade Pillow
-  python3.9 -m pip install networkx matplotlib
-  python3.9 -m pip install 'stable-baselines3==1.7.0'
-  ```
+    ```
+    sudo apt-get update
+    sudo add-apt-repository ppa:deadsnakes/ppa
+    sudo apt-get install python3.9 vim wget net-tools curl
+    sudo apt install python3-pip python3.9-distutils
+    python3.9 -m pip install --upgrade Pillow
+    python3.9 -m pip install networkx matplotlib
+    python3.9 -m pip install 'stable-baselines3==1.7.0'
+    ```
 2. Install and Configure Java
   (1) Install Java
   ```
