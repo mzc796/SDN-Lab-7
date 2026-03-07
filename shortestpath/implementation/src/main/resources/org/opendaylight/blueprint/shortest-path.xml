@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:odl="http://opendaylight.org/xmlns/blueprint/v1.0.0">
+
+  <reference id="dataBroker"
+    interface="org.opendaylight.mdsal.binding.api.DataBroker" />
+  <reference id="notificationService"
+    interface="org.opendaylight.mdsal.binding.api.NotificationService" />
+  <reference id="rpcService"
+    interface="org.opendaylight.mdsal.binding.api.RpcService" />
+
+  <odl:clustered-app-config id="shortestPathConfig"
+    binding-class="org.opendaylight.yang.gen.v1.urn.opendaylight.l2switch.shortest.path.config.rev140528.ShortestPathConfig">
+  </odl:clustered-app-config>
+
+  <bean id="shortestPathProvider"
+    class="org.opendaylight.l2switch.shortestpath.ShortestPathProvider"
+    init-method="init" destroy-method="close">
+    <argument ref="dataBroker" />
+    <argument ref="notificationService" />
+    <argument ref="rpcService" />
+    <argument ref="shortestPathConfig" />
+  </bean>
+
+</blueprint>

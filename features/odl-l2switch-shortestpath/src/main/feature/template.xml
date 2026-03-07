@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.6.0" name="odl-l2switch-shortestpath">
+    <repository>mvn:org.opendaylight.openflowplugin/odl-openflowplugin-flow-services/{{versionAsInProject}}/xml/features</repository>
+    <repository>mvn:org.opendaylight.l2switch/odl-l2switch-switch-rest/{{versionAsInProject}}/xml/features</repository>
+    <feature name="odl-l2switch-shortestpath">
+        <feature version="{{semVerRange}}">odl-openflowplugin-flow-services</feature>
+        <feature prerequisite="true">wrap</feature>
+        <!-- odl-l2switch-switch-rest pulls in: odl-l2switch-switch (main-impl, arphandler, hosttracker) + odl-restconf -->
+        <feature version="{{versionAsInProject}}">odl-l2switch-switch-rest</feature>
+        <feature version="{{versionAsInProject}}">odl-l2switch-loopremover</feature>
+        <bundle>mvn:org.opendaylight.l2switch/shortestpath-impl/{{versionAsInProject}}</bundle>
+    </feature>
+</features>

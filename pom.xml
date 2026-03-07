@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.opendaylight.odlparent</groupId>
+        <artifactId>odlparent-lite</artifactId>
+        <version>14.1.6</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>org.opendaylight.l2switch</groupId>
+    <artifactId>l2switch</artifactId>
+    <version>3.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>l2switch</name> <!-- Used by Sonar to set project name -->
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <maven.install.skip>true</maven.install.skip>
+    </properties>
+
+    <modules>
+        <module>artifacts</module>
+        <module>features</module>
+        <module>binding-parent</module>
+        <module>distribution/karaf</module>
+
+        <module>addresstracker</module>
+        <module>arphandler</module>
+        <module>hosttracker</module>
+        <module>l2switch-main</module>
+        <module>loopremover</module>
+        <module>packethandler</module>
+        <module>shortestpath</module>
+    </modules>
+
+    <scm>
+        <connection>scm:git:ssh://git.opendaylight.org:29418/l2switch.git</connection>
+        <developerConnection>scm:git:ssh://git.opendaylight.org:29418/l2switch.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://wiki.opendaylight.org/view/L2_Switch:Main</url>
+    </scm>
+</project>

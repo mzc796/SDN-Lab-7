@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+  xmlns:odl="http://opendaylight.org/xmlns/blueprint/v1.0.0">
+
+  <reference id="dataBroker"
+    interface="org.opendaylight.mdsal.binding.api.DataBroker" />
+  <reference id="rpcService"
+    interface="org.opendaylight.mdsal.binding.api.RpcService" />
+
+  <odl:clustered-app-config id="loopRemoverConfig"
+    binding-class="org.opendaylight.yang.gen.v1.urn.opendaylight.packet.loop.remover.config.rev140528.LoopRemoverConfig">
+  </odl:clustered-app-config>
+
+  <bean id="loopRemover"
+    class="org.opendaylight.l2switch.loopremover.LoopRemoverProvider"
+    destroy-method="close">
+    <argument ref="dataBroker" />
+    <argument ref="rpcService" />
+    <argument ref="loopRemoverConfig" />
+  </bean>
+</blueprint>

@@ -1,0 +1,77 @@
+/*
+ * Copyright (c) 2016 Inocybe and others.  All rights reserved.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html
+ */
+package org.opendaylight.l2switch.arphandler.core;
+
+import org.opendaylight.l2switch.arphandler.flow.InitialFlowWriter;
+import org.opendaylight.l2switch.arphandler.inventory.InventoryReader;
+import org.opendaylight.mdsal.binding.api.DataBroker;
+import org.opendaylight.mdsal.binding.api.NotificationService;
+import org.opendaylight.mdsal.binding.api.RpcService;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.flow.service.rev130819.AddFlow;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.packet.arp.handler.config.rev140528.ArpHandlerConfig;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.packet.arp.rev140528.ArpPacketReceived;
+import org.opendaylight.yang.gen.v1.urn.opendaylight.packet.service.rev130709.TransmitPacket;
+import org.opendaylight.yangtools.concepts.Registration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ArpHandlerProvider {
+    private static final Logger LOG = LoggerFactory.getLogger(ArpHandlerProvider.class);
+    private Registration listenerRegistration;
+    private Registration topoNodeListenerReg;
+
+    private final NotificationService notificationService;
+    private final DataBroker dataBroker;
+    private final RpcService rpcService;
+    private final ArpHandlerConfig arpHandlerConfig;
+
+    public ArpHandlerProvider(final DataBroker dataBroker, final NotificationService notificationProviderService,
+            final RpcService rpcService, final ArpHandlerConfig config) {
+        this.notificationService = notificationProviderService;
+        this.dataBroker = dataBroker;
+        this.rpcService = rpcService;
+        this.arpHandlerConfig = config;
+    }
+
+    public void init() {
+        //Write initial flows to send arp to controller
+        LOG.info("ArpHandler is in Reactive Mode");
+        InitialFlowWriter initialFlowWriter = new InitialFlowWriter(rpcService.getRpc(AddFlow.class));
+        initialFlowWriter.setFlowTableId(arpHandlerConfig.getArpFlowTableId());
+        initialFlowWriter.setFlowPriority(arpHandlerConfig.getArpFlowPriority());
+        initialFlowWriter.setFlowIdleTimeout(arpHandlerConfig.getArpFlowIdleTimeout());
+        initialFlowWriter.setFlowHardTimeout(arpHandlerConfig.getArpFlowHardTimeout());
+        initialFlowWriter.setIsHybridMode(arpHandlerConfig.getIsHybridMode());
+        topoNodeListenerReg = initialFlowWriter.registerAsDataChangeListener(dataBroker);
+
+        // Setup InventoryReader
+        InventoryReader inventoryReader = new InventoryReader(dataBroker);
+        inventoryReader.setRefreshData(true);
+
+        // Setup PacketDispatcher (no ARP flow installation — controller always sees ARP)
+        PacketDispatcher packetDispatcher = new PacketDispatcher(inventoryReader,
+            rpcService.getRpc(TransmitPacket.class), dataBroker);
+
+        // Setup ArpPacketHandler
+        ArpPacketHandler arpPacketHandler = new ArpPacketHandler(packetDispatcher);
+
+        // Register ArpPacketHandler
+        this.listenerRegistration = notificationService.registerListener(ArpPacketReceived.class, arpPacketHandler);
+        LOG.info("ArpHandler initialized.");
+    }
+
+    public void close() throws Exception {
+        if (listenerRegistration != null) {
+            listenerRegistration.close();
+        }
+        if (topoNodeListenerReg != null) {
+            topoNodeListenerReg.close();
+        }
+        LOG.info("ArpHandler (instance {}) torn down.", this);
+    }
+}
