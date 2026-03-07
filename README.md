@@ -1,7 +1,5 @@
-# SDN-Lab-6
-This project extends the OpenDaylight L2Switch project
-(https://github.com/opendaylight/l2switch)
-to implement IP-based shortest path routing for educational purposes.
+# SDN-Lab-7
+Manually poison the topology views of OpenDaylight and ONOS controller.
 
 The original OpenDaylight project is licensed under the Eclipse Public License (EPL).
 All original license headers and copyright notices are preserved.
@@ -41,9 +39,10 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
 
 [L2switch User Guide](https://test-odl-docs.readthedocs.io/en/latest/user-guide/l2switch-user-guide.html)
 ## Preparation
-0. (Optional) Install IntelliJ-idea
+0. Install matplotlib and networkx for topology drawing.
    ```
-   sudo snap install intellij-idea --classic
+   sudo apt install python3-matplotlib
+   sudo apt install python3-networkx
    ```
 1. Download the code:
    ```
