@@ -66,8 +66,8 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
    sudo ./run_mn_ring.sh
    ```
    ```
-         Switch_C----------------------Switch_B
-            |                             |
+            Switch_C----------------------Switch_B
+               |                             |
    Host_1 --- Switch_A --- Switch_D --- Switch_E-----Host_2
    ```
 5. Check connection.
