@@ -1,25 +1,23 @@
 # SDN-Lab-7
-In this lab, we manually poison the topology views of OpenDaylight and the ONOS controller.
-
 The original OpenDaylight project is licensed under the Eclipse Public License (EPL).
 All original license headers and copyright notices are preserved.
 ## Learning Objectives
 
-In this lab, you will:
+In this lab, you will poison the topology view of an SDN controller by installing malicious OpenFlow flow entries. The goal is to fabricate deceptive links in the controller’s topology while leaving the actual network connectivity unchanged.
 
-* Verify your solution of precise link manipulation
+Building on the environment from previous labs, you will perform precise link manipulation, altering how discovery packets are forwarded so that the controller infers incorrect switch links.
 
-* 
+Specifically, you will:
 
-* Analyze the differences and commonalities among ICMP, TCP, and UDP packets.
+* Install malicious flow entries on selected switches.
 
-* Inspect OpenFlow flow table changes during traffic forwarding.
+* Observe how the controller’s discovered topology changes.
 
-* Debug a control-plane bug and explain its impact.
+* Compare the real topology with the controller’s inferred topology.
 
-* Trace the complete lifecycle of a packet from host to controller and back.
+* Incrementally modify flow entries to achieve the target deceptive link.
 
-This lab builds an IP-based shortest path routing application on top of the L2Switch project in OpenDaylight.
+By the end of the lab, you should understand how manipulating flow rules can corrupt the controller’s topology view and exploit weaknesses in SDN discovery mechanisms.
 
 ## Virtual Machine Summary
 Memory: >= 8GB
