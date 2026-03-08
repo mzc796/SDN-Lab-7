@@ -102,5 +102,4 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
    ```
    sudo ./del_all_flows.sh openflow:1
    ```
-8. After
     
