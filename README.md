@@ -1,5 +1,5 @@
 # SDN-Lab-7
-Manually poison the topology views of OpenDaylight and ONOS controller.
+In this lab, we manually poison the topology views of OpenDaylight and the ONOS controller.
 
 The original OpenDaylight project is licensed under the Eclipse Public License (EPL).
 All original license headers and copyright notices are preserved.
@@ -7,9 +7,9 @@ All original license headers and copyright notices are preserved.
 
 In this lab, you will:
 
-* Understand how reactive forwarding works in Software-Defined Networking (SDN).
+* Verify your solution of precise link manipulation
 
-* Observe how packets trigger Packet-In → Flow Installation → Packet-Out behavior.
+* 
 
 * Analyze the differences and commonalities among ICMP, TCP, and UDP packets.
 
@@ -38,7 +38,8 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
 [OpenDaylight Flow Examples](https://docs.opendaylight.org/projects/openflowplugin/en/latest/users/flow-examples.html)
 
 [L2switch User Guide](https://test-odl-docs.readthedocs.io/en/latest/user-guide/l2switch-user-guide.html)
-## Preparation
+## Precise Link Manipulation
+
 0. Install matplotlib and networkx for topology drawing.
    ```
    sudo apt install python3-matplotlib
@@ -46,11 +47,12 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
    ```
 1. Download the code:
    ```
-   git clone https://github.com/mzc796/SDN-Lab-6.git
+   git clone https://github.com/mzc796/SDN-Lab-7.git
    ```
+   NOTE: If you reuse SDN-Lab-6, jump to Step 3 to run OpenDaylight directly.
 2. Build project:
    ```
-   cd SDN-Lab-6/
+   cd SDN-Lab-7/
    mvn clean install -DskipTests -Dcheckstyle.skip
    ```
 3. Run OpenDaylight-ShortestPath
@@ -61,24 +63,12 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
 4. Run Mininet. Open a new terminal:
    ```
    cd SDN-Lab-6/mn/
-   sudo ./run_mn_tree.sh
+   sudo ./run_mn_ring.sh
    ```
    ```
-   s1
-   ├── s2
-   │   ├── s3
-   │   │   ├── h1
-   │   │   └── h2
-   │   └── s4
-   │       ├── h3
-   │       └── h4
-   └── s5
-       ├── s6
-       │   ├── h5
-       │   └── h6
-       └── s7
-           ├── h7
-           └── h8
+         Switch_C----------------------Switch_B
+            |                             |
+   Host_1 --- Switch_A --- Switch_D --- Switch_E-----Host_2
    ```
 5. Check connection.
 
@@ -86,64 +76,31 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
    ```
    cd SDN-Lab-6/odl-scripts/
    mkdir data
-   sudo ./req_topo.sh
+   python3 draw_topo.py
    ```
-   (2) Observe default flow entries. For example:
-   ```
-   cd SDN-Lab-6/mn/
-   sudo ./dump_flows.sh s3
-   ```
-6. Test IP-based shortest path routing. 
+6. Start Poisoning
 
-   Question: ICMP, TCP, UDP, which types of packets can be forwarded automatically by IP-based shortest path routing? 
+   (1) Extract switch ports' MAC addresses, and export them as variables:
+   ```
+   source set_mac_vars.sh
+   ```
+   (2) You can use a script to set up poisonous flow entries to achieve the goal below.
 
-   (1) Test ICMP
+   For example:
+   ```
+            Switch_B----------------------Switch_E-----Host_2
+               |                             |
+   Host_1 --- Switch_A --- Switch_C --- Switch_D
+   ```
+   ```
+   sudo ./pois_flow.sh openflow:1 0 11 $S1_ETH1 1 101
+   ```
+   (3) You can use `python3 draw_topo.py` to check out topology changes after each poisonous flow entry is set up. Please note that the OpenDaylight topology service is not robust. It occasionally does not show a reasonable topology discovery result or has a long delay. 
+7. Utilities
 
-   In the mininet terminal:
+   (1) Delete all config flow entries on a switch. For example:
    ```
-   xterm h1 h2
+   sudo ./del_all_flows.sh openflow:1
    ```
-   In the h1 terminal:
-   ```
-   ping 10.0.0.2
-   ```
-   In the h2 terminal:
-   ```
-   ping 10.0.0.1
-   ```
-   (2) Test TCP
-
-   In the h2 terminal:
-   ```
-   python3 tcp_server.py
-   ```
-   In the h1 terminal:
-   ```
-   python3 tcp_client.py
-   ```
-   (3) Test UDP
-
-   In the h2 terminal:
-   ```
-   python3 udp_receiver.py 2
-   ```
-   In the h1 terminal:
-   ```
-   python3 udp_sender.py 1 2
-   ```
-   (4) Check flow entries and explain what's observed and why.
-   
-   In the system terminal:
-   ```
-   sudo ./dump_flows s3
-   ```
-7. Find the bug
-
-   There is a bug in the code. Please send UDP packets from different hosts to find the bug and correct it.
-   
-   After fixing the bug, manually delete the folder "SDN-Lab-6/distribution/karaf/target/", repeat Steps 2 to 5 to verify the fix.
-   
-   Hint: You could test `h1` sends UDP packets to `h2`, and `h3` sends UDP packets to `h2`.
-   
-10. Write down the workflow of UDP/TCP/ICMP packets from hosts to the switch, controller, ..., until they arrive at the destination host. For example, the complete process of `h1 ping h3`.
+8. After
     
