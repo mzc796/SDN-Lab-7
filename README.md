@@ -47,7 +47,7 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
    ```
    git clone https://github.com/mzc796/SDN-Lab-7.git
    ```
-   NOTE: If you reuse SDN-Lab-7, jump to Step 3 to run OpenDaylight directly.
+   NOTE: If you reuse the compiled ODL of SDN-Lab-6, jump to Step 3 to run OpenDaylight directly.
 2. Build project:
    ```
    cd SDN-Lab-7/
