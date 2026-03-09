@@ -68,9 +68,11 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
    sudo ./run_mn_ring.sh
    ```
    ```
-            Switch_C----------------------Switch_B
-               |                             |
-   Host_1 --- Switch_A --- Switch_D --- Switch_E-----Host_2
+               Switch_C 2-------------------1 Switch_B
+                  1                              2
+                  |                              |
+                  2                              3
+   Host_1 --3 Switch_A 1---1 Switch_D 2---2 Switch_E 1----Host_2
    ```
 5. Check connection.
 
@@ -88,9 +90,11 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
    ```
    (2) Use `pois_flow.sh` to set up poisonous flow entries to precisely manipulate links and make the topology view as shown below:
    ```
-            Switch_B----------------------Switch_E-----Host_2
-               |                             |
-   Host_1 --- Switch_A --- Switch_C --- Switch_D
+            Switch_B 2--------------------1 Switch_E 3----Host_2
+                1                              2
+                |                              |
+                2                              2
+   Host_1 --3 Switch_A 1---2 Switch_C 1---1 Switch_D
    ```
    Usage demo:
    ```
