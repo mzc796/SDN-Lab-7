@@ -4,11 +4,25 @@
 import json
 import math
 import os
+import subprocess
 import matplotlib.pyplot as plt
 import networkx as nx
 
-DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(SCRIPT_DIR, "data")
 TOPO_FILE = os.path.join(DATA_DIR, "topo.json")
+
+
+def fetch_topology():
+    """Call req_topo.sh to get the latest topology from ODL."""
+    req_script = os.path.join(SCRIPT_DIR, "req_topo.sh")
+    print("Fetching latest topology from ODL...")
+    result = subprocess.run(["bash", req_script], cwd=SCRIPT_DIR,
+                            capture_output=True, text=True)
+    if result.returncode != 0:
+        print(f"Warning: req_topo.sh failed: {result.stderr}")
+    else:
+        print("Topology fetched successfully.")
 
 
 def load_topology(filepath):
@@ -68,8 +82,11 @@ def compute_positions(G, switches, hosts):
     radius = 2.0
 
     # Place switches evenly around a circle (top-centered)
+    # Swap positions: s2<->s3, s4<->s5
+    swap_map = {1: 2, 2: 1, 3: 4, 4: 3}
     for i, sw in enumerate(switches):
-        angle = math.pi / 2 + 2 * math.pi * i / n  # start from top, go clockwise
+        slot = swap_map.get(i, i)
+        angle = math.pi / 2 + 2 * math.pi * slot / n  # start from top, go clockwise
         pos[sw] = (radius * math.cos(angle), radius * math.sin(angle))
 
     # Place hosts outside the ring, offset from their attachment switch
@@ -210,6 +227,7 @@ def draw_topology(G, switches, hosts):
 
 
 if __name__ == "__main__":
+    fetch_topology()
     topology = load_topology(TOPO_FILE)
     G, switches, hosts = build_graph(topology)
     draw_topology(G, switches, hosts)
