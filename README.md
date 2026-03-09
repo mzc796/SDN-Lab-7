@@ -92,7 +92,7 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
                |                             |
    Host_1 --- Switch_A --- Switch_C --- Switch_D
    ```
-   For example:
+   Usage demo:
    ```
    sudo ./pois_flow.sh openflow:1 0 11 $S1_ETH1 1 101
    ```
