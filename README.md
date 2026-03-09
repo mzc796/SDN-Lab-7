@@ -36,6 +36,10 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
 [OpenDaylight Flow Examples](https://docs.opendaylight.org/projects/openflowplugin/en/latest/users/flow-examples.html)
 
 [L2switch User Guide](https://test-odl-docs.readthedocs.io/en/latest/user-guide/l2switch-user-guide.html)
+
+[ONOS REST API](https://wiki.onosproject.org/display/ONOS/Appendix+B%3A+REST+API)
+
+[ONOS flow rules configuration](https://wiki.onosproject.org/display/ONOS/Flow+Rules)
 ## Precise Link Manipulation
 
 0. Install matplotlib and networkx for topology drawing.
