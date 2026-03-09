@@ -86,14 +86,13 @@ Installation Disc: [ubuntu-22.04.4-desktop-amd64.iso](https://old-releases.ubunt
    ```
    source set_mac_vars.sh
    ```
-   (2) You can use a script to set up poisonous flow entries to achieve the goal below.
-
-   For example:
+   (2) Use `pois_flow.sh` to set up poisonous flow entries to precisely manipulate links and make the topology view as shown below:
    ```
             Switch_B----------------------Switch_E-----Host_2
                |                             |
    Host_1 --- Switch_A --- Switch_C --- Switch_D
    ```
+   For example:
    ```
    sudo ./pois_flow.sh openflow:1 0 11 $S1_ETH1 1 101
    ```
